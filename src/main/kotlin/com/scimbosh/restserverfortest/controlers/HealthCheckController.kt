@@ -32,7 +32,20 @@ class HealthCheckController(
         healthCheckService.getAll(pageIndex)
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: Int,): HealthCheckDto =
-        healthCheckService.getById(id)
+    fun getById(@PathVariable id: Int): ResponseEntity<Any> {
+//        val event = healthCheckService.getById(id)
+//        return if(event != null){
+//            ResponseEntity.ok(event)
+//        }else{
+//            ResponseEntity.notFound().build()
+//        }
+
+        return try{
+            ResponseEntity.ok(healthCheckService.getById(id))
+        }catch (e: Exception){
+            ResponseEntity.notFound().build()
+        }
+    }
+
 
 }
