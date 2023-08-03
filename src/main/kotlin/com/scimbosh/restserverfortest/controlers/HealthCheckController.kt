@@ -31,4 +31,8 @@ class HealthCheckController(
     fun findAll(@RequestParam("page") pageIndex: Int?): List<HealthCheckDto> =
         healthCheckService.getAll(pageIndex)
 
+    @GetMapping("/{id}")
+    fun getById(@PathVariable id: Int,): HealthCheckDto =
+        healthCheckService.getById(id)
+
 }
