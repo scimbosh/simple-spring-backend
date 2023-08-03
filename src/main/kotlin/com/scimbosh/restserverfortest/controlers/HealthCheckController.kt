@@ -4,6 +4,7 @@ import com.scimbosh.restserverfortest.dto.HealthCheckDto
 import com.scimbosh.restserverfortest.services.HealthCheckService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping(value = ["/hc"])
@@ -23,7 +24,7 @@ class HealthCheckController(
 
     @PostMapping("/create")
     fun createCheck(@RequestBody dto: HealthCheckDto): Int {
-        dto.request = "POST"
+        dto.request = UUID.randomUUID().toString()
         return healthCheckService.create(dto)
     }
 
@@ -33,19 +34,12 @@ class HealthCheckController(
 
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Int): ResponseEntity<Any> {
-//        val event = healthCheckService.getById(id)
-//        return if(event != null){
-//            ResponseEntity.ok(event)
-//        }else{
-//            ResponseEntity.notFound().build()
-//        }
-
-        return try{
-            ResponseEntity.ok(healthCheckService.getById(id))
-        }catch (e: Exception){
+        val event = healthCheckService.getById(id)
+        return if(event != null){
+            ResponseEntity.ok(event)
+        }else{
             ResponseEntity.notFound().build()
         }
     }
-
 
 }

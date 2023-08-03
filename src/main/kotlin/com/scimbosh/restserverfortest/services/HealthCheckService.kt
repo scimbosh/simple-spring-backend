@@ -8,5 +8,5 @@ interface HealthCheckService {
 
     fun getAll(pageIndex: Int?): List<HealthCheckDto>
 
-    fun getById(id: Int): HealthCheckDto
+    fun getById(id: Int): HealthCheckDto?
 }

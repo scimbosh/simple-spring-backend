@@ -2,7 +2,6 @@ package com.scimbosh.restserverfortest.services.Impl
 
 import com.scimbosh.restserverfortest.dto.HealthCheckDto
 import com.scimbosh.restserverfortest.entities.HealthCheckEntity
-import com.scimbosh.restserverfortest.exception.EventNotFoundException
 import com.scimbosh.restserverfortest.repository.HealthCheckRepository
 import com.scimbosh.restserverfortest.services.HealthCheckService
 import org.springframework.data.domain.PageRequest
@@ -16,8 +15,8 @@ class HealthCheckServiceImpl(
 ): HealthCheckService {
 
     @Transactional
-    override fun create(healthCheckDto: HealthCheckDto): Int {
-        val healthCheckEntity = hcRepo.save(healthCheckDto.toEntity())
+    override fun create(dto: HealthCheckDto): Int {
+        val healthCheckEntity = hcRepo.save(dto.toEntity())
         if  (healthCheckEntity.id != null) {
             return healthCheckEntity.id
         }
@@ -33,10 +32,9 @@ class HealthCheckServiceImpl(
         return result
     }
 
-    override fun getById(id: Int): HealthCheckDto =
+    override fun getById(id: Int): HealthCheckDto? =
         hcRepo.findByIdOrNull(id)
             ?.toDto()
-            ?: throw EventNotFoundException(id)
 
 
     private fun HealthCheckDto.toEntity(): HealthCheckEntity =
