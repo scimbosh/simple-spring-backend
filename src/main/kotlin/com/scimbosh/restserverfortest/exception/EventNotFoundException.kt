@@ -8,5 +8,4 @@ class EventNotFoundException(id: Int) : BaseException(
         errorCode = "id.not.found",
         description = "Event not found with id=$id"
     )
-) {
-}
+)
