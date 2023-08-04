@@ -15,12 +15,8 @@ class HealthCheckServiceImpl(
 ): HealthCheckService {
 
     @Transactional
-    override fun create(dto: HealthCheckDto): Int {
-        val healthCheckEntity = hcRepo.save(dto.toEntity())
-        if  (healthCheckEntity.id != null) {
-            return healthCheckEntity.id
-        }
-        return -1
+    override fun create(dto: HealthCheckDto): HealthCheckEntity {
+        return hcRepo.save(dto.toEntity())
     }
 
     override fun getAll(pageIndex: Int?): List<HealthCheckDto> {
@@ -30,6 +26,12 @@ class HealthCheckServiceImpl(
             hcRepo.findAll().map { it.toDto()}
         }
         return result
+    }
+
+    override fun deleteById(id: Int): Boolean {
+        hcRepo.deleteById(id)
+        println ("result.isEmpty -> ${hcRepo.findById(id).isEmpty} ")
+        return hcRepo.findById(id).isEmpty
     }
 
     override fun getById(id: Int): HealthCheckDto? =
