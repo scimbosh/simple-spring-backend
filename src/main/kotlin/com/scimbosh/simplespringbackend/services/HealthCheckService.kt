@@ -1,7 +1,7 @@
-package com.scimbosh.restserverfortest.services
+package com.scimbosh.simplespringbackend.services
 
-import com.scimbosh.restserverfortest.dto.HealthCheckDto
-import com.scimbosh.restserverfortest.entities.HealthCheckEntity
+import com.scimbosh.simplespringbackend.dto.HealthCheckDto
+import com.scimbosh.simplespringbackend.entities.HealthCheckEntity
 
 interface HealthCheckService {
 

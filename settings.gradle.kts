@@ -1,1 +1,1 @@
-rootProject.name = "restserverfortest"
+rootProject.name = "simplespringbackend"

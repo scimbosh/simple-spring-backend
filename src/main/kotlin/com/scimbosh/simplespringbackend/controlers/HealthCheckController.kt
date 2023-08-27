@@ -1,9 +1,9 @@
-package com.scimbosh.restserverfortest.controlers
+package com.scimbosh.simplespringbackend.controlers
 
-import com.scimbosh.restserverfortest.dto.HealthCheckDto
-import com.scimbosh.restserverfortest.entities.HealthCheckEntity
-import com.scimbosh.restserverfortest.model.SuccessBodyContent
-import com.scimbosh.restserverfortest.services.HealthCheckService
+import com.scimbosh.simplespringbackend.dto.HealthCheckDto
+import com.scimbosh.simplespringbackend.entities.HealthCheckEntity
+import com.scimbosh.simplespringbackend.model.SuccessBodyContent
+import com.scimbosh.simplespringbackend.services.HealthCheckService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*

@@ -13,6 +13,7 @@ version = "1.0.0"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
+	//sourceCompatibility = JavaVersion.VERSION_11
 }
 
 repositories {
@@ -35,6 +36,7 @@ tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs += "-Xjsr305=strict"
 		jvmTarget = "17"
+		//jvmTarget = "11"
 	}
 }
 

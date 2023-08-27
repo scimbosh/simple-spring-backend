@@ -1,4 +1,4 @@
-package com.scimbosh.restserverfortest.exception
+package com.scimbosh.simplespringbackend.exception
 
 data class ApiError(
     val errorCode: String,

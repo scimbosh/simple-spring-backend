@@ -1,4 +1,4 @@
-package com.scimbosh.restserverfortest.model
+package com.scimbosh.simplespringbackend.model
 
 class SuccessBodyContent(
     val isSuccessful: Boolean = true,

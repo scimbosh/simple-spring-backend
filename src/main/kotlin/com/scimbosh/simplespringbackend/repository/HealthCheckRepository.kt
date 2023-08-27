@@ -1,6 +1,6 @@
-package com.scimbosh.restserverfortest.repository
+package com.scimbosh.simplespringbackend.repository
 
-import com.scimbosh.restserverfortest.entities.HealthCheckEntity
+import com.scimbosh.simplespringbackend.entities.HealthCheckEntity
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.CrudRepository
 

@@ -1,4 +1,4 @@
-package com.scimbosh.restserverfortest.exception
+package com.scimbosh.simplespringbackend.exception
 
 import org.springframework.http.HttpStatus
 

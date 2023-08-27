@@ -1,4 +1,4 @@
-package com.scimbosh.restserverfortest.dto
+package com.scimbosh.simplespringbackend.dto
 
 data class HealthCheckDto(
     val id: Int? = null,

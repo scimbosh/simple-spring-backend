@@ -1,11 +1,11 @@
-package com.scimbosh.restserverfortest
+package com.scimbosh.simplespringbackend
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class RestserverfortestApplication
+class SimpleSpringBackend
 
 fun main(args: Array<String>) {
-	runApplication<RestserverfortestApplication>(*args)
+	runApplication<SimpleSpringBackend>(*args)
 }

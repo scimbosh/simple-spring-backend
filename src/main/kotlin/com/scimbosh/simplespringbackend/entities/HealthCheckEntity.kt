@@ -1,4 +1,4 @@
-package com.scimbosh.restserverfortest.entities
+package com.scimbosh.simplespringbackend.entities
 
 import jakarta.persistence.*
 

@@ -1,9 +1,9 @@
-package com.scimbosh.restserverfortest.services.Impl
+package com.scimbosh.simplespringbackend.services.Impl
 
-import com.scimbosh.restserverfortest.dto.HealthCheckDto
-import com.scimbosh.restserverfortest.entities.HealthCheckEntity
-import com.scimbosh.restserverfortest.repository.HealthCheckRepository
-import com.scimbosh.restserverfortest.services.HealthCheckService
+import com.scimbosh.simplespringbackend.dto.HealthCheckDto
+import com.scimbosh.simplespringbackend.entities.HealthCheckEntity
+import com.scimbosh.simplespringbackend.repository.HealthCheckRepository
+import com.scimbosh.simplespringbackend.services.HealthCheckService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
