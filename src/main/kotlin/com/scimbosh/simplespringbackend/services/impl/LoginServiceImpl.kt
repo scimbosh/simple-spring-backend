@@ -1,4 +1,4 @@
-package com.scimbosh.simplespringbackend.services.Impl
+package com.scimbosh.simplespringbackend.services.impl
 
 import com.scimbosh.simplespringbackend.dto.UserDto
 import com.scimbosh.simplespringbackend.entities.UserEntity
@@ -13,15 +13,20 @@ class LoginServiceImpl(
 ) : LoginService {
 
     @Transactional
-    override fun create(dto: UserDto): UserEntity {
-        return loginRepo.save(dto.toEntity())
+    override fun create(dto: UserDto): UserDto? {
+        return if (getByLogin(dto.login).isEmpty()) {
+            loginRepo.save(dto.toEntity()).toDto()
+        }else{
+            null
+        }
     }
-//    fun checkCredentials(dto: UserDto): Boolean =
-//        getByLogin(dto.login) != null
-//
-//
-//    fun getByLogin(login: String): UserDto? =
-//        loginRepo.findByLogin(login)?.toDto()
+
+    fun getByLogin(login: String): List<UserDto?> {
+        val users = loginRepo.findByLogin(login)
+        return users.map { it?.toDto() }
+    }
+
+    //fun checkCredentials(dto: UserDto): Boolean = getByLogin(dto.login) != null
 
 
 

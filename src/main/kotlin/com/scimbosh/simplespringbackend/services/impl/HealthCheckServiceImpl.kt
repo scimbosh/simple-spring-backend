@@ -1,4 +1,4 @@
-package com.scimbosh.simplespringbackend.services.Impl
+package com.scimbosh.simplespringbackend.services.impl
 
 import com.scimbosh.simplespringbackend.dto.HealthCheckDto
 import com.scimbosh.simplespringbackend.entities.HealthCheckEntity

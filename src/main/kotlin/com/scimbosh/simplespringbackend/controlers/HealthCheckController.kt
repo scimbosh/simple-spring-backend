@@ -2,7 +2,7 @@ package com.scimbosh.simplespringbackend.controlers
 
 import com.scimbosh.simplespringbackend.dto.HealthCheckDto
 import com.scimbosh.simplespringbackend.entities.HealthCheckEntity
-import com.scimbosh.simplespringbackend.model.SuccessBodyContent
+import com.scimbosh.simplespringbackend.model.BodyContent
 import com.scimbosh.simplespringbackend.services.HealthCheckService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -48,7 +48,7 @@ class HealthCheckController(
     fun deleteById(@PathVariable id: Int): ResponseEntity<Any> {
         val event = healthCheckService.getById(id)
         return if(event != null){
-            if (healthCheckService.deleteById(id)) ResponseEntity.ok(SuccessBodyContent())
+            if (healthCheckService.deleteById(id)) ResponseEntity.ok(BodyContent())
             else ResponseEntity.internalServerError().build()
         }else{
             ResponseEntity.notFound().build()
