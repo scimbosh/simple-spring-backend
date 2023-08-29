@@ -6,4 +6,6 @@ interface LoginService{
 
     fun create(dto: UserDto): UserDto?
 
+    fun generateToken(dto: UserDto): UserDto?
+
 }

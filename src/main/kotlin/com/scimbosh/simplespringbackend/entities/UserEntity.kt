@@ -13,5 +13,5 @@ class UserEntity(
     @Column(name="login")
     var login: String = "",
     var password: String = "",
-    //var token: String? = ""
+    var token: String? = ""
 )

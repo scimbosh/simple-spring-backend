@@ -4,8 +4,10 @@ import com.scimbosh.simplespringbackend.dto.UserDto
 import com.scimbosh.simplespringbackend.entities.UserEntity
 import com.scimbosh.simplespringbackend.repository.LoginRepository
 import com.scimbosh.simplespringbackend.services.LoginService
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class LoginServiceImpl(
@@ -14,28 +16,32 @@ class LoginServiceImpl(
 
     @Transactional
     override fun create(dto: UserDto): UserDto? {
-        return if (getByLogin(dto.login).isEmpty()) {
+        return if (loginRepo.findByLogin(dto.login).isEmpty()) {
             loginRepo.save(dto.toEntity()).toDto()
         }else{
             null
         }
     }
 
-    fun getByLogin(login: String): List<UserDto?> {
-        val users = loginRepo.findByLogin(login)
-        return users.map { it?.toDto() }
+    @Modifying
+    override fun generateToken(dto: UserDto): UserDto? {
+        val user = checkCredentials(dto)
+        return if (user != null) {
+            user.token = UUID.randomUUID().toString()
+            return loginRepo.save(user).toDto()
+        } else {
+            null
+        }
     }
-
-    //fun checkCredentials(dto: UserDto): Boolean = getByLogin(dto.login) != null
-
-
+    private fun checkCredentials(dto: UserDto): UserEntity? =
+        loginRepo.findByLogin(dto.login).find { it?.password == dto.password }
 
     private fun UserEntity.toDto(): UserDto =
         UserDto(
             id = this.id,
             login = this.login,
             password = this.password,
-            //token = this.token
+            token = this.token
         )
 
     private fun UserDto.toEntity(): UserEntity =
@@ -43,7 +49,7 @@ class LoginServiceImpl(
             id = 0,
             login = this.login,
             password = this.password,
-            //token = this.token
+            token = this.token
         )
 
 }

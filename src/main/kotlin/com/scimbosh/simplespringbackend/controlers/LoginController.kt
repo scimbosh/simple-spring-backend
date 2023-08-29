@@ -18,17 +18,21 @@ class LoginController(
     fun signUp(@RequestBody dto: UserDto): Any {
         val user = loginService.create(dto)
         return if (user != null) {
-            ResponseEntity.status(201).body(BodyContent(user = user))
+            ResponseEntity.status(201).body(user)
         }else{
             ResponseStatusException(HttpStatus.CONFLICT, "Login is busy")
         }
     }
 
-//    @PostMapping("/signin")
-//    fun signIn(@RequestBody dto: UserDto): UserEntity {
-//        loginService.checkCredentials(dto)
-//        return UserEntity()
-//    }
+    @PostMapping("/signin")
+    fun signIn(@RequestBody dto: UserDto): Any {
+        val checkResult = loginService.generateToken(dto)
+        return if (checkResult != null ){
+            ResponseEntity.ok(checkResult)
+        }else{
+            ResponseEntity.status(401).body(BodyContent(isSuccessful = false, obj = dto))
+        }
+    }
 
 
 }

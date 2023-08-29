@@ -5,4 +5,7 @@ import org.springframework.data.repository.CrudRepository
 
 interface LoginRepository: CrudRepository<UserEntity, Int> {
     fun findByLogin(login: String): MutableList<UserEntity?>
+
+    fun findByOrderById(): MutableList<UserEntity?>
+
 }
