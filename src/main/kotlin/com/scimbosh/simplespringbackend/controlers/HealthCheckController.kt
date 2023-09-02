@@ -35,6 +35,7 @@ class HealthCheckController(
         healthCheckService.getAll(pageIndex)
 
     @GetMapping("/{id}")
+    //@CrossOrigin(origins = ["http://localhost:4200"])
     fun getById(@PathVariable id: Int): ResponseEntity<Any> {
         val event = healthCheckService.getById(id)
         return if(event != null){
