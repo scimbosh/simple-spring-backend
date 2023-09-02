@@ -25,7 +25,7 @@ class LoginServiceImpl(
 
     @Modifying
     override fun generateToken(dto: UserDto): UserDto? {
-        val user = checkCredentials(dto)
+        val user = getUserByLoginAndPass(dto)
         return if (user != null) {
             user.token = UUID.randomUUID().toString()
             return loginRepo.save(user).toDto()
@@ -33,8 +33,20 @@ class LoginServiceImpl(
             null
         }
     }
-    private fun checkCredentials(dto: UserDto): UserEntity? =
+    private fun getUserByLoginAndPass(dto: UserDto): UserEntity? =
         loginRepo.findByLogin(dto.login).find { it?.password == dto.password }
+
+
+    override fun checkCredentials(dto: UserDto): UserDto? {
+        val user = getUserByLoginAndPass(dto)?.toDto()
+        return if (user?.token == dto.token) {
+            user
+        }
+        else {
+            null
+        }
+    }
+
 
     private fun UserEntity.toDto(): UserDto =
         UserDto(

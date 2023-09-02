@@ -8,4 +8,6 @@ interface LoginService{
 
     fun generateToken(dto: UserDto): UserDto?
 
+    fun checkCredentials(dto: UserDto): UserDto?
+
 }
