@@ -16,3 +16,11 @@ spring:
         #ddl-auto: update
         temp:
           use_jdbc_metadata_defaults: false
+#security:
+#  user:
+#    password: password
+#  ignored:
+#    - "*.bundle.*"
+logging:
+  level:
+    org.springframework.security: DEBUG
