@@ -1,11 +1,13 @@
 package com.scimbosh.simplespringbackend.controlers
 
+import com.scimbosh.simplespringbackend.dto.ToDoDto
+import com.scimbosh.simplespringbackend.model.BodyContent
 import com.scimbosh.simplespringbackend.services.LoginService
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.scimbosh.simplespringbackend.services.ToDoService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import java.security.Principal
+import org.springframework.http.MediaType;
 
 
 @RestController
@@ -13,28 +15,28 @@ import java.security.Principal
 //@RequestMapping(value = ["/api"])
 @CrossOrigin(origins = ["http://localhost:4200"], maxAge = 86400)
 class LoginController(
-    private  val loginService: LoginService
+    private val loginService: LoginService,
+    private val toDoService: ToDoService
 ) {
 
-    @GetMapping("/login")
-    fun login(): String {
-        return "login"
-    }
 
     @GetMapping("/login2")
     fun login2(user: Principal): Principal {
         return user
     }
 
-//    @GetMapping("/")
-//    fun index(): String {
-//        return "index"
-//    }
-
-    @GetMapping("/user/index")
-    fun userIndex(): String {
-        return "user/index"
+    @PostMapping("/add")
+    //@PostMapping("/add",
+    //consumes = [MediaType.APPLICATION_JSON_VALUE],
+    //produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun addItem(@RequestBody dto: ToDoDto): Any {
+        return if (toDoService.saveToDo(dto) != null) {
+            dto
+        } else {
+            BodyContent(isSuccessful = false, obj = dto)
+        }
     }
+
 
 //    @PostMapping("/signup")
 //    @CrossOrigin(origins = ["http://localhost:4200"])
@@ -59,5 +61,14 @@ class LoginController(
 //    }
 
 
+    @GetMapping("/login")
+    fun login(): String {
+        return "login"
+    }
+
+    @GetMapping("/user/index")
+    fun userIndex(): String {
+        return "user/index"
+    }
 }
 

@@ -10,23 +10,23 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.cors.reactive.CorsWebFilter
 
 
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig {
 
-
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-
-
-        http.authorizeRequests()
-            .requestMatchers("/login").permitAll()
+        http
+            .csrf { csrf -> csrf.disable() }
+            .authorizeRequests()
+            .requestMatchers("/login2").permitAll()
             //.requestMatchers("/user/index").hasAuthority("USER")
             .anyRequest().authenticated()
             .and()
-            .formLogin().loginPage("/login")
+            .formLogin().loginPage("/login2")
             .and().httpBasic()
         return http.build()
     }
@@ -35,7 +35,7 @@ class WebSecurityConfig {
 //    @Bean
 //    fun corsConfigurationSource(): CorsConfigurationSource {
 //        val configuration = CorsConfiguration()
-//        configuration.allowedOrigins = listOf("https://localhost", "http://localhost",  "http://127.0.0.1", "http://[::1]")
+//        configuration.allowedOrigins = listOf("https://localhost", "http://localhost:4200", "http://localhost",  "http://127.0.0.1", "http://[::1]")
 //        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
 //        val source = UrlBasedCorsConfigurationSource()
 //        source.registerCorsConfiguration("/**", configuration)
