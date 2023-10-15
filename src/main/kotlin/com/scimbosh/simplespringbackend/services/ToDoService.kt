@@ -1,9 +1,7 @@
 package com.scimbosh.simplespringbackend.services
 
 import com.scimbosh.simplespringbackend.dto.ToDoDto
-import com.scimbosh.simplespringbackend.dto.UserDto
 import com.scimbosh.simplespringbackend.entities.ToDoEntity
-import com.scimbosh.simplespringbackend.entities.UserEntity
 import com.scimbosh.simplespringbackend.repository.ToDoRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,13 +20,15 @@ class ToDoService(
         ToDoDto(
             id = this.id,
             userId = this.userId,
-            content = this.content
+            content = this.content,
+            checked = this.checked
         )
 
     private fun ToDoDto.toEntity(): ToDoEntity =
         ToDoEntity(
             id = 0,
             userId = this.userId,
-            content = this.content
+            content = this.content,
+            checked = this.checked
         )
 }

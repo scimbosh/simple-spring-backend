@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "todos")
-class ToDoEntity (
+class ToDoEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -13,8 +13,10 @@ class ToDoEntity (
     @Column(name="id")
     val id: Int? = 0,
     @Column(name="user_id")
-    val userId: Int = 0,
+    val userId: Int? = 0,
     @Column(name="content")
-    val content: String = "",
+    val content: String? = "",
+    @Column(name="checked")
+    val checked: Boolean? = false
 
 )

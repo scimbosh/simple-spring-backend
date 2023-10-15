@@ -1,7 +1,7 @@
 spring:
   #spring.main.allow-bean-definition-overriding=true
   #main:
-    #allow-bean-definition-overriding: true
+  #allow-bean-definition-overriding: true
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/restserverfortest
@@ -13,7 +13,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
+        #spring.jpa.generate-ddl=true
         ddl-auto: update
+        #ddl-auto: create-drop
         temp:
           use_jdbc_metadata_defaults: false
 #security:

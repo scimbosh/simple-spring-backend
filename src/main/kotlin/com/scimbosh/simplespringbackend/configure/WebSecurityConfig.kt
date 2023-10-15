@@ -1,21 +1,34 @@
 package com.scimbosh.simplespringbackend.configure
 
+import com.scimbosh.simplespringbackend.entities.UserEntity
+import com.scimbosh.simplespringbackend.repository.UserRepository
+import com.scimbosh.simplespringbackend.services.JpaUserDetailsService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.CommandLineRunner
+import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.event.EventListener
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.web.server.ServerHttpSecurity
-import org.springframework.security.config.web.server.ServerHttpSecurity.http
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.NoOpPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import org.springframework.web.cors.reactive.CorsWebFilter
 
 
 @Configuration
 @EnableWebSecurity
-class WebSecurityConfig {
+class WebSecurityConfig() {
+
+    @Autowired
+    lateinit var userDetailsService: JpaUserDetailsService
+
+    @Autowired
+    fun configAuthentication(auth: AuthenticationManagerBuilder) {
+        auth.userDetailsService(userDetailsService)
+    }
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -31,57 +44,36 @@ class WebSecurityConfig {
         return http.build()
     }
 
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
 
+//if you don't need encryption password in DB
 //    @Bean
-//    fun corsConfigurationSource(): CorsConfigurationSource {
-//        val configuration = CorsConfiguration()
-//        configuration.allowedOrigins = listOf("https://localhost", "http://localhost:4200", "http://localhost",  "http://127.0.0.1", "http://[::1]")
-//        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//        val source = UrlBasedCorsConfigurationSource()
-//        source.registerCorsConfiguration("/**", configuration)
-//        return source
-//    }
-
-//    @Bean
-//    fun userDetailsService(): UserDetailsService {
-//        val userDetails = User.withDefaultPasswordEncoder()
-//            .username("user")
-//            .password("password")
-//            .roles("USER")
-//            .build()
-//        return InMemoryUserDetailsManager(userDetails)
-//    }
-
-//    @Bean
-//    fun userDetailsService(): UserDetailsService {
-//        return InMemoryUserDetailsManager().apply {
-//            createUser(
-//                User.withUsername("user")
-//                    .password(passwordEncoder().encode("password"))
-//                    .roles("USER")
-//                    .build()
-//            )
-//        }
-//    }
-//
-//    @Bean
-//    fun passwordEncoder() = BCryptPasswordEncoder()
-
-////////////////////////////////////////////////БЫЛО 2
-
-//    @Bean
-//    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-//        http.authorizeRequests()
-//            .requestMatchers("/login").permitAll()
-//            //.requestMatchers("/user/index").hasAuthority("USER")
-//            .anyRequest().authenticated()
-//            .and()
-//            .formLogin().loginPage("/login")
-//        return http.build()
+//    fun passwordEncoder(): PasswordEncoder {
+//        return NoOpPasswordEncoder.getInstance()
 //    }
 
 
-//////////////////////////////////////////////// БЫЛО 1
+    //example of running custom code after application launch
+    @EventListener
+    fun doSomethingAfterStartup(event: ApplicationReadyEvent) {
+        println("hello world, I have just started up")
+    }
+    @Bean
+    fun commandLineRunner(users: UserRepository, encoder: PasswordEncoder): CommandLineRunner {
+        return CommandLineRunner { _: Array<String?>? ->
+            println ("EXECUTE START")
+            users.save(UserEntity("user", encoder.encode("password"), "ROLE_USER"))
+            users.save(UserEntity("admin", encoder.encode("password"), "ROLE_USER,ROLE_ADMIN"))
+            println ("EXECUTE END")
+        }
+    }
+
+
+
+////////////////////////////////////////////////  It was
 
 //    @Bean
 //    @Throws(Exception::class)
@@ -126,26 +118,5 @@ class WebSecurityConfig {
 //    }
 
 
-/// TEMP
-
-
-    //    @Configuration
-//    @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-//    protected class SecurityConfiguration : WebSecurityConfigurerAdapter() {
-//        @Throws(java.lang.Exception::class)
-//        protected fun configure(http: HttpSecurity) {
-//            // @formatter:off
-//            http
-//                .formLogin().loginPage("/login").successForwardUrl("/user").and()
-//                .logout().and()
-//                .authorizeRequests()
-//                .antMatchers("/index.html", "/", "/home").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .csrf()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//            // @formatter:on
-//        }
-//    }
 
 }
