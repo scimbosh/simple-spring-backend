@@ -16,10 +16,14 @@ class ToDoService(
         return toDoRepository.save(dto.toEntity()).toDto()
     }
 
+    fun findToDoListByUser(username: String): List<ToDoEntity>? =
+        toDoRepository.findByUsername(username)
+
+
     private fun ToDoEntity.toDto(): ToDoDto =
         ToDoDto(
             id = this.id,
-            userId = this.userId,
+            username = this.username,
             content = this.content,
             checked = this.checked
         )
@@ -27,7 +31,7 @@ class ToDoService(
     private fun ToDoDto.toEntity(): ToDoEntity =
         ToDoEntity(
             id = 0,
-            userId = this.userId,
+            username = this.username,
             content = this.content,
             checked = this.checked
         )

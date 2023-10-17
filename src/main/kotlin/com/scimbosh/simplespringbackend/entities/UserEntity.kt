@@ -9,6 +9,7 @@ class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private var id: Long? = null,
+    @Column(unique=true)
     private var username: String? = null,
     private var password: String? = null,
     private var roles: String? = null,

@@ -11,9 +11,9 @@ class ToDoEntity(
     //@GeneratedValue(strategy=GenerationType.TABLE)
 //    @Column(name="id", nullable=false, updatable=false)
     @Column(name="id")
-    val id: Int? = 0,
-    @Column(name="user_id")
-    val userId: Int? = 0,
+    val id: Long? = 0,
+    @Column(name="username")
+    val username: String? = "",
     @Column(name="content")
     val content: String? = "",
     @Column(name="checked")
