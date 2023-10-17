@@ -29,6 +29,12 @@ dependencies {
 	//new
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	runtimeOnly("org.postgresql:postgresql")
+	//security
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	testImplementation("org.springframework.security:spring-security-test")
+	//thymeleaf
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
 }
 

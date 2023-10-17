@@ -15,6 +15,7 @@ class HealthCheckController(
 ) {
 
     @GetMapping
+    @CrossOrigin(origins = ["http://localhost:4200"])
     fun check(): ResponseEntity<Any>{
         return  ResponseEntity.ok("Health Check - OK")
     }
