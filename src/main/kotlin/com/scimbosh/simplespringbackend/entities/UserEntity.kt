@@ -2,7 +2,6 @@ package com.scimbosh.simplespringbackend.entities
 
 import jakarta.persistence.*
 
-
 @Entity
 @Table(name = "users")
 class UserEntity(
