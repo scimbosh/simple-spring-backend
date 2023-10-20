@@ -15,29 +15,17 @@ class ToDoService(
     private val logger = LoggerFactory.getLogger(javaClass)
     @Transactional
     fun saveToDo(dto: ToDoDto): ToDoDto? {
-        var result : ToDoEntity = toDoRepository.save(dto.toEntity())
-        logger.info("Result of save in DB ${result.toString()}")
-        logger.info("Result of save in DB ${result.id.toString()}")
-        return result.toDto()
+        return toDoRepository.save(dto.toEntity()).toDto()
     }
 
     @Transactional
     fun deleteSelected(dto: ToDoDto) {
-        logger.info("Result of DELETE in DB ")
-        logger.info("Result of DELETE in DB ${dto.toEntity().id.toString()}")
-        logger.info("Result of DELETE in DB ${dto.toEntity().username.toString()}")
-        logger.info("Result of DELETE in DB ${dto.toEntity().content.toString()}")
-        logger.info("Result of DELETE in DB ${dto.toEntity().checked.toString()}")
-        toDoRepository.delete(dto.toEntity())
-        //toDoRepository.deleteById(dto.id!!.toInt())
-
+        //toDoRepository.delete(dto.toEntity())
+        toDoRepository.deleteById(dto.id!!.toInt())
     }
-
-
 
     fun findToDoListByUser(username: String): List<ToDoEntity>? =
         toDoRepository.findByUsername(username)
-
 
     private fun ToDoEntity.toDto(): ToDoDto =
         ToDoDto(

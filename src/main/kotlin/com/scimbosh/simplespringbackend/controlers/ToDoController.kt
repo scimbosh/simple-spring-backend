@@ -18,9 +18,7 @@ class ToDoController(
 
     private val logger = LoggerFactory.getLogger(javaClass)
     @PostMapping("/add")
-    //@PostMapping("/add",
-    //consumes = [MediaType.APPLICATION_JSON_VALUE],
-    //produces = [MediaType.APPLICATION_JSON_VALUE])
+    //@PostMapping("/add", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun addItem(@RequestBody dto: ToDoDto, principal: Principal): Any {
         dto.username = principal.name
         return toDoService.saveToDo(dto) ?: BodyContent(isSuccessful = false, obj = dto)
@@ -28,9 +26,6 @@ class ToDoController(
 
     @GetMapping("/list")
     fun list(principal: Principal): List<ToDoEntity>? {
-        logger.error("TEEEEEEEEEEEST2222")
-        println("TEEEEEEEEEEEST")
-        println("name = ${principal.name}")
         return toDoService.findToDoListByUser(principal.name)
     }
 
@@ -47,9 +42,6 @@ class ToDoController(
             toDoService.deleteSelected(dto)
         }
     }
-
-
-
 
     @GetMapping("/hc")
     fun userIndex(): String {
