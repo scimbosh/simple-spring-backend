@@ -7,7 +7,6 @@ import com.scimbosh.simplespringbackend.services.ToDoService
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
-import kotlin.contracts.contract
 
 @RestController
 @RequestMapping(value = ["/todo"])
@@ -22,12 +21,9 @@ class ToDoController(
     //@PostMapping("/add",
     //consumes = [MediaType.APPLICATION_JSON_VALUE],
     //produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun addItem(@RequestBody dto: ToDoDto): Any {
-        return if (toDoService.saveToDo(dto) != null) {
-            dto
-        } else {
-            BodyContent(isSuccessful = false, obj = dto)
-        }
+    fun addItem(@RequestBody dto: ToDoDto, principal: Principal): Any {
+        dto.username = principal.name
+        return toDoService.saveToDo(dto) ?: BodyContent(isSuccessful = false, obj = dto)
     }
 
     @GetMapping("/list")
@@ -37,6 +33,22 @@ class ToDoController(
         println("name = ${principal.name}")
         return toDoService.findToDoListByUser(principal.name)
     }
+
+    @DeleteMapping("/delete")
+    fun delete(@RequestBody dto: ToDoDto, principal: Principal): Any? {
+        logger.warn("Name dto = ${dto.username}  namePrincipal = ${principal.name}")
+        if (dto.username != principal.name) {
+            return BodyContent(isSuccessful = false, obj = dto)
+        }
+        return if (dto.username == null) {
+            dto.username = principal.name
+            toDoService.deleteSelected(dto)
+        }else{
+            toDoService.deleteSelected(dto)
+        }
+    }
+
+
 
 
     @GetMapping("/hc")

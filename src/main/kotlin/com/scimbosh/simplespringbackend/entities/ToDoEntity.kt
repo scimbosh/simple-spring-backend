@@ -12,7 +12,7 @@ class ToDoEntity(
 //    @Column(name="id", nullable=false, updatable=false)
     @Column(name="id")
     val id: Long? = 0,
-    @Column(name="username")
+    @Column(name="username", nullable=false)
     val username: String? = "",
     @Column(name="content")
     val content: String? = "",
