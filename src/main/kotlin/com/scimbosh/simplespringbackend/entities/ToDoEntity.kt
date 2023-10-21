@@ -15,9 +15,9 @@ class ToDoEntity(
     val username: String? = "",
 
     @Column(name="content")
-    val content: String? = "",
+    var content: String? = "",
 
     @Column(name="checked")
-    val checked: Boolean? = false
+    var checked: Boolean? = false
 
 )

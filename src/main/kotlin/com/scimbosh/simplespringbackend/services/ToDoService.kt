@@ -6,6 +6,7 @@ import com.scimbosh.simplespringbackend.repository.ToDoRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class ToDoService(
@@ -23,6 +24,22 @@ class ToDoService(
         //toDoRepository.delete(dto.toEntity())
         toDoRepository.deleteById(dto.id!!.toInt())
     }
+
+    @Transactional
+    fun updateSelected(dto: ToDoDto): ToDoDto? {
+
+        //toDoRepository.update(dto.toEntity())?.toDto()
+
+        var todoEntity: ToDoEntity? =  toDoRepository.findById(dto.id!!)
+        todoEntity?.checked = dto.checked
+        todoEntity?.content = dto.content
+        return if(todoEntity != null){
+            toDoRepository.save(todoEntity).toDto()
+        } else {
+            null
+        }
+    }
+
 
     fun findToDoListByUser(username: String): List<ToDoEntity>? =
         toDoRepository.findByUsername(username)

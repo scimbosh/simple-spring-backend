@@ -7,4 +7,6 @@ interface ToDoRepository: CrudRepository<ToDoEntity, Int> {
 
     fun findByUsername(username: String): List<ToDoEntity>?
 
+    fun findById(id: Long): ToDoEntity?
+
 }
