@@ -36,7 +36,7 @@ class WebSecurityConfig() {
             .csrf { csrf -> csrf.disable() }
             .authorizeRequests()
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // disable cors error to options request
-            .requestMatchers("/auth/login", "/auth/hc").permitAll()
+            .requestMatchers("/auth/login", "/auth/create", "/auth/hc").permitAll()
             //.requestMatchers("/user/index").hasAuthority("USER")
             .anyRequest().authenticated()
             .and()

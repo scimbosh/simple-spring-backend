@@ -6,7 +6,6 @@ import com.scimbosh.simplespringbackend.repository.ToDoRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 @Service
 class ToDoService(
@@ -39,7 +38,6 @@ class ToDoService(
             null
         }
     }
-
 
     fun findToDoListByUser(username: String): List<ToDoEntity>? =
         toDoRepository.findByUsername(username)

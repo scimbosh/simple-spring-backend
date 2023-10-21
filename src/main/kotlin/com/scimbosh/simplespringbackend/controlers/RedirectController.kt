@@ -10,6 +10,6 @@ class RedirectController {
 
     @GetMapping("/redirect")
     fun redirectWithUsingRedirectView(): RedirectView {
-        return RedirectView("http://localhost:4200/data")
+        return RedirectView("http://localhost:4200/login")
     }
 }
