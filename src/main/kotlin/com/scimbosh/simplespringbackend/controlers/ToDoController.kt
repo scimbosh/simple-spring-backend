@@ -1,14 +1,13 @@
 package com.scimbosh.simplespringbackend.controlers
 
 import com.scimbosh.simplespringbackend.dto.ToDoDto
-import com.scimbosh.simplespringbackend.entities.ToDoEntity
-import com.scimbosh.simplespringbackend.model.BodyContent
 import com.scimbosh.simplespringbackend.services.ToDoService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.server.ResponseStatusException
 import java.security.Principal
+
 
 @RestController
 @RequestMapping(value = ["/todo"])
@@ -19,38 +18,47 @@ class ToDoController(
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
+
     @PostMapping("/add")
     //@PostMapping("/add", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun addItem(@RequestBody dto: ToDoDto, principal: Principal): Any {
+    fun addItem(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
         dto.username = principal.name
-        return toDoService.saveToDo(dto) ?: BodyContent(isSuccessful = false, obj = dto)
+        //return toDoService.saveToDo(dto) ?: BodyContent(isSuccessful = false, obj = dto)
+        val result = toDoService.saveToDo(dto)
+        return if (result != null) {
+            ResponseEntity<Any>(result, HttpStatus.CREATED)
+        } else {
+            ResponseEntity<Any>(dto, HttpStatus.BAD_REQUEST)
+        }
     }
 
     @GetMapping("/list")
-    fun list(principal: Principal): List<ToDoEntity>? {
-        return toDoService.findToDoListByUser(principal.name)
-    }
+    fun list(principal: Principal): ResponseEntity<Any> =
+        ResponseEntity<Any>(toDoService.findToDoListByUser(principal.name), HttpStatus.OK)
+
 
     @DeleteMapping
-    fun delete(@RequestBody dto: ToDoDto, principal: Principal): Any? {
+    fun delete(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
         logger.warn("Name dto = ${dto.username}  namePrincipal = ${principal.name}")
         if (dto.username == null) dto.username = principal.name
         if (dto.username != principal.name) {
-            return ResponseStatusException(HttpStatus.FORBIDDEN)
+            return ResponseEntity<Any>(dto, HttpStatus.FORBIDDEN)
         }
-        return toDoService.deleteSelected(dto)
+        return ResponseEntity<Any>(toDoService.deleteSelected(dto), HttpStatus.OK)
     }
 
     @PatchMapping
-    fun update(@RequestBody dto: ToDoDto, principal: Principal): Any? {
-        logger.info("Update todo = ${dto.toString()}  ${dto.id.toString()}")
+    fun update(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
+        logger.info("Update todo = $dto  ${dto.id.toString()}")
         return if (dto.username != principal.name) {
-            //ResponseEntity.status(403) // not working
-            ResponseStatusException(HttpStatus.FORBIDDEN)
+            //ResponseStatusException(HttpStatus.FORBIDDEN)
+            ResponseEntity<Any>(dto, HttpStatus.FORBIDDEN)
         } else if (dto.id == null) {
-            ResponseStatusException(HttpStatus.NOT_FOUND)
+            ResponseEntity<Any>(dto, HttpStatus.NOT_FOUND)
         } else {
-            toDoService.updateSelected(dto) ?: ResponseStatusException(HttpStatus.NOT_FOUND)
+            val result = toDoService.updateSelected(dto)
+            if (result == null) ResponseEntity<Any>(dto, HttpStatus.NOT_FOUND)
+            else ResponseEntity<Any>(result, HttpStatus.OK)
         }
     }
 
