@@ -26,10 +26,7 @@ class ToDoService(
 
     @Transactional
     fun updateSelected(dto: ToDoDto): ToDoDto? {
-
-        //toDoRepository.update(dto.toEntity())?.toDto()
-
-        var todoEntity: ToDoEntity? =  toDoRepository.findById(dto.id!!)
+        val todoEntity: ToDoEntity? =  toDoRepository.findById(dto.id!!)
         todoEntity?.checked = dto.checked
         todoEntity?.content = dto.content
         return if(todoEntity != null){

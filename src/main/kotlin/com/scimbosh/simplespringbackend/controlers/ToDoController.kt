@@ -23,7 +23,6 @@ class ToDoController(
     //@PostMapping("/add", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun addItem(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
         dto.username = principal.name
-        //return toDoService.saveToDo(dto) ?: BodyContent(isSuccessful = false, obj = dto)
         val result = toDoService.saveToDo(dto)
         return if (result != null) {
             ResponseEntity<Any>(result, HttpStatus.CREATED)
