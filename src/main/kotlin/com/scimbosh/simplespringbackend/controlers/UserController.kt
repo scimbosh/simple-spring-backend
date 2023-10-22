@@ -11,9 +11,9 @@ import java.security.Principal
 
 
 @RestController
-@RequestMapping(value = ["/auth"])
+@RequestMapping(value = ["/user"])
 @CrossOrigin(origins = ["http://localhost:4200"], maxAge = 86400)
-class LoginController(
+class UserController(
     private val userService: UserService
 ) {
 
@@ -29,7 +29,7 @@ class LoginController(
         else ResponseEntity<Any>(user, HttpStatus.CREATED)
     }
 
-    @PatchMapping("/update")
+    @PatchMapping("/password")
     fun updatePassword(
         principal: Principal,
         @RequestBody jsonNode: JsonNode
