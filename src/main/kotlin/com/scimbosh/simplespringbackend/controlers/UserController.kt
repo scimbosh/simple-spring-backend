@@ -23,6 +23,11 @@ class UserController(
         return user
     }
 
+    @GetMapping("/roles")
+    fun getRoles(): List<String> {
+        return listOf("ROLE_USER","ROLE_ADMIN")
+    }
+
     @PostMapping("/create")
     fun createUser(@RequestBody user: UserDto): ResponseEntity<Any> =
         ResponseEntity<Any>(userService.createUser(user), HttpStatus.CREATED)
