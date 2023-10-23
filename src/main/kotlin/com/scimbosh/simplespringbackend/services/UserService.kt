@@ -2,6 +2,7 @@ package com.scimbosh.simplespringbackend.services
 
 import com.scimbosh.simplespringbackend.dto.UserDto
 import com.scimbosh.simplespringbackend.entities.UserEntity
+import com.scimbosh.simplespringbackend.exception.UniquenessViolationException
 import com.scimbosh.simplespringbackend.repository.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +25,16 @@ class UserService(
     fun createUser(dto: UserDto): UserDto? {
         dto.password = passwordEncoder.encode(dto.password)
         logger.warn("dto.password = ${dto.password}")
-        return userRepository.save(dto.toEntity()).toDto()
+
+        //return if ( userRepository.findByUsername(dto.username) != null ) throw UniquenessViolationException()
+        //else userRepository.save(dto.toEntity()).toDto()
+
+        return try {
+            userRepository.save(dto.toEntity()).toDto()
+        }catch (e: Exception){
+            throw UniquenessViolationException(root = dto.toString(), message = e.message)
+        }
+
     }
 
     @Transactional

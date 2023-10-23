@@ -24,10 +24,8 @@ class UserController(
     }
 
     @PostMapping("/create")
-    fun createUser(@RequestBody user: UserDto): ResponseEntity<Any> {
-        return if (userService.createUser(user) == null) ResponseEntity<Any>(user, HttpStatus.BAD_REQUEST)
-        else ResponseEntity<Any>(user, HttpStatus.CREATED)
-    }
+    fun createUser(@RequestBody user: UserDto): ResponseEntity<Any> =
+        ResponseEntity<Any>(userService.createUser(user), HttpStatus.CREATED)
 
     @PatchMapping("/password")
     fun updatePassword(
