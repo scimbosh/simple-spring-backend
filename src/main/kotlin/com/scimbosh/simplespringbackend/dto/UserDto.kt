@@ -4,5 +4,5 @@ data class UserDto(
     var id: Long?,
     var username: String?,
     var password: String?,
-    var roles: String?
+    var roles: List<String>?
 )

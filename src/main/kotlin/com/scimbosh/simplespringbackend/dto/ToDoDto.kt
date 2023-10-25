@@ -5,5 +5,4 @@ data class ToDoDto(
     var username: String?,
     var content: String?,
     var checked: Boolean?
-    //var time: Instant
 )

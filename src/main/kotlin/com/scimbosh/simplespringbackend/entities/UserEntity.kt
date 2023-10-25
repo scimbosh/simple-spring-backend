@@ -15,10 +15,10 @@ class UserEntity(
 
     private var password: String? = null,
 
-    private var roles: String? = null,
+    private var roles: List<String>? = null,
 ) {
     
-    constructor(username: String?, password: String?, roles: String?) : this() {
+    constructor(username: String?, password: String?, roles:  List<String>?) : this() {
         this.username = username
         this.password = password
         this.roles = roles
@@ -57,11 +57,11 @@ class UserEntity(
         this.password = password
     }
 
-    fun getRoles(): String {
-        return roles!!
+    fun getRoles(): List<String>? {
+        return roles
     }
 
-    fun setRoles(roles: String?) {
+    fun setRoles(roles: List<String>? ) {
         this.roles = roles
     }
 

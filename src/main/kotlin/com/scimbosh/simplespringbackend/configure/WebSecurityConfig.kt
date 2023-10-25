@@ -1,5 +1,6 @@
 package com.scimbosh.simplespringbackend.configure
 
+import com.scimbosh.simplespringbackend.entities.UserEntity
 import com.scimbosh.simplespringbackend.repository.UserRepository
 import com.scimbosh.simplespringbackend.services.JpaUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
@@ -67,10 +68,10 @@ class WebSecurityConfig() {
     @Bean
     fun commandLineRunner(users: UserRepository, encoder: PasswordEncoder): CommandLineRunner {
         return CommandLineRunner { _: Array<String?>? ->
-            println ("EXECUTE START")
-            //users.save(UserEntity("user", encoder.encode("password"), "ROLE_USER"))
-           // users.save(UserEntity("admin", encoder.encode("password"), "ROLE_USER,ROLE_ADMIN"))
-            println ("EXECUTE END")
+            println("EXECUTE START")
+//            users.save(UserEntity("user", encoder.encode("password"), listOf<String>("ROLE_USER")))
+//            users.save(UserEntity("admin", encoder.encode("password"), listOf<String>("ROLE_USER", "ROLE_ADMIN")))
+            println("EXECUTE END")
         }
     }
 
