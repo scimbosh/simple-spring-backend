@@ -2,6 +2,7 @@ package com.scimbosh.simplespringbackend.services
 
 import com.scimbosh.simplespringbackend.dto.UserDto
 import com.scimbosh.simplespringbackend.entities.UserEntity
+import com.scimbosh.simplespringbackend.exception.NotFoundException
 import com.scimbosh.simplespringbackend.exception.UniquenessViolationException
 import com.scimbosh.simplespringbackend.repository.UserRepository
 import org.slf4j.LoggerFactory
@@ -52,6 +53,25 @@ class UserService(
             null
         }
     }
+
+    @Transactional
+    fun updateUser(user: UserDto): UserDto{
+        val currentUserEntity: UserEntity? = userRepository.findByUsername(user.username)
+        if (currentUserEntity != null){
+            currentUserEntity.setRoles(user.roles)
+            currentUserEntity.setPassword(passwordEncoder.encode(user.password))
+            return  userRepository.save(currentUserEntity).toDto()
+        } else {
+            throw NotFoundException(root = user.username, message = "user not found")
+        }
+    }
+
+    fun getUsers(): List<UserDto>? =
+         userRepository.findAll().map {
+            it.setPassword("")
+            it.toDto()
+         }
+
 
     private fun UserDto.toEntity(): UserEntity =
         UserEntity(

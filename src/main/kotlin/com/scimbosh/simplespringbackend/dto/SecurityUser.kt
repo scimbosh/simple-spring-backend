@@ -25,8 +25,6 @@ class SecurityUser(user: UserEntity) : UserDetails {
     override fun getAuthorities(): Collection<GrantedAuthority?> {
         return user
             .getRoles()
-            //.split(","))
-            //?.stream()
             ?.map { role: String? -> SimpleGrantedAuthority(role) }
             ?.toList()!!
     }

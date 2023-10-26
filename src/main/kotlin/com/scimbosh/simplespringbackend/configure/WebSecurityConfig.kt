@@ -38,7 +38,8 @@ class WebSecurityConfig() {
             .authorizeRequests()
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // disable cors error to options request
             .requestMatchers("/user/login", "/user/create", "/user/roles", "/user/hc").permitAll()
-            //.requestMatchers("/user/index").hasAuthority("USER")
+            .requestMatchers( HttpMethod.PATCH, "/user").hasAuthority("ROLE_ADMIN")
+            .requestMatchers(HttpMethod.GET, "/user/list").hasAuthority("ROLE_ADMIN")
             .anyRequest().authenticated()
             .and()
             .formLogin().loginPage("/user/login")

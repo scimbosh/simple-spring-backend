@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus
 
 class NotFoundException(
     errorCode: String? = "user.not.found",
-    root: String? = "duplicate key value violates unique constraint",
+    root: String? = "item not found",
     message: String? = null
 ) : BaseException(
     HttpStatus.NOT_FOUND,

@@ -6,6 +6,8 @@ import com.scimbosh.simplespringbackend.services.UserService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PostAuthorize
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -13,20 +15,17 @@ import java.security.Principal
 @RestController
 @RequestMapping(value = ["/user"])
 @CrossOrigin(origins = ["http://localhost:4200"], maxAge = 86400)
-class UserController(
+open class UserController(
     private val userService: UserService
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
+
     @GetMapping("/login")
-    fun login(user: Principal): Principal {
-        return user
-    }
+    fun login(user: Principal): Principal = user
 
     @GetMapping("/roles")
-    fun getRoles(): List<String> {
-        return listOf("ROLE_USER","ROLE_ADMIN")
-    }
+    fun getRoles(): List<String> = listOf("ROLE_USER","ROLE_ADMIN")
 
     @PostMapping("/create")
     fun createUser(@RequestBody user: UserDto): ResponseEntity<Any> =
@@ -43,9 +42,16 @@ class UserController(
         else  ResponseEntity<Any>(HttpStatus.FORBIDDEN)
     }
 
+    @PatchMapping()
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PostAuthorize("hasRole('ROLE_ADMIN')")
+    fun updateUser(@RequestBody user: UserDto): UserDto = userService.updateUser(user)
+
+    @GetMapping("/list")
+    fun getUsers(): List<UserDto>? = userService.getUsers()
+
     @GetMapping("/hc")
-    fun userIndex(): String {
-        return "/auth/hc - OK"
-    }
+    fun userIndex(): String = "/auth/hc - OK"
+
 }
 
