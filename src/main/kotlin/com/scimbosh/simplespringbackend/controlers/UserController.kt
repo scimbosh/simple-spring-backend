@@ -6,8 +6,6 @@ import com.scimbosh.simplespringbackend.services.UserService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PostAuthorize
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -21,11 +19,17 @@ open class UserController(
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    @GetMapping("/hc")
+    fun userIndex(): String = "/auth/hc - OK"
+
     @GetMapping("/login")
     fun login(user: Principal): Principal = user
 
     @GetMapping("/roles")
     fun getRoles(): List<String> = listOf("ROLE_USER","ROLE_ADMIN")
+
+    @GetMapping("/list")
+    fun getUsers(): List<UserDto>? = userService.getUsers()
 
     @PostMapping("/create")
     fun createUser(@RequestBody user: UserDto): ResponseEntity<Any> =
@@ -45,13 +49,13 @@ open class UserController(
     @PatchMapping()
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     //@PostAuthorize("hasRole('ROLE_ADMIN')")
-    fun updateUser(@RequestBody user: UserDto): UserDto = userService.updateUser(user)
+    open fun updateUser(@RequestBody user: UserDto): UserDto = userService.updateUser(user)
 
-    @GetMapping("/list")
-    fun getUsers(): List<UserDto>? = userService.getUsers()
+    @DeleteMapping()
+    fun deleteUser(@RequestBody user: UserDto){
+        userService.deleteUser(user)
+    }
 
-    @GetMapping("/hc")
-    fun userIndex(): String = "/auth/hc - OK"
 
 }
 

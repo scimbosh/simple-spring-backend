@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.security.Principal
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class UserService(
@@ -56,14 +57,20 @@ class UserService(
 
     @Transactional
     fun updateUser(user: UserDto): UserDto{
-        val currentUserEntity: UserEntity? = userRepository.findByUsername(user.username)
+        val currentUserEntity: UserEntity? = userRepository.findById(user.id!!).getOrNull()
         if (currentUserEntity != null){
-            currentUserEntity.setRoles(user.roles)
-            currentUserEntity.setPassword(passwordEncoder.encode(user.password))
+            if(!user.username.isNullOrEmpty())currentUserEntity.setUsername(user.username)
+            if(!user.roles.isNullOrEmpty())currentUserEntity.setRoles(user.roles)
+            if(!user.password.isNullOrEmpty()) currentUserEntity.setPassword(passwordEncoder.encode(user.password))
             return  userRepository.save(currentUserEntity).toDto()
         } else {
-            throw NotFoundException(root = user.username, message = "user not found")
+            throw NotFoundException(root = user.id.toString(), message = "user not found")
         }
+    }
+    @Transactional
+    fun deleteUser(user: UserDto){
+        if ( user.id != null ) userRepository.deleteById(user.id!!)
+        else throw NotFoundException(root = user.toString(), message = "user.id not found")
     }
 
     fun getUsers(): List<UserDto>? =
