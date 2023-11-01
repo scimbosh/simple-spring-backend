@@ -35,12 +35,9 @@ class ToDoController(
         }
     }
 
-
-
-
     @DeleteMapping
     fun delete(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
-        logger.warn("Name dto = ${dto.username}  namePrincipal = ${principal.name}")
+        logger.info("Name dto = ${dto.username}  namePrincipal = ${principal.name}")
         if (dto.username == null) dto.username = principal.name
         if (dto.username != principal.name) {
             return ResponseEntity<Any>(dto, HttpStatus.FORBIDDEN)
@@ -52,7 +49,6 @@ class ToDoController(
     fun update(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
         logger.info("Update todo = $dto  ${dto.id.toString()}")
         return if (dto.username != principal.name) {
-            //ResponseStatusException(HttpStatus.FORBIDDEN)
             ResponseEntity<Any>(dto, HttpStatus.FORBIDDEN)
         } else if (dto.id == null) {
             ResponseEntity<Any>(dto, HttpStatus.NOT_FOUND)

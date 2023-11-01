@@ -27,11 +27,7 @@ class UserService(
     @Transactional
     fun createUser(dto: UserDto): UserDto? {
         dto.password = passwordEncoder.encode(dto.password)
-        logger.warn("dto.password = ${dto.password}")
-
-        //return if ( userRepository.findByUsername(dto.username) != null ) throw UniquenessViolationException()
-        //else userRepository.save(dto.toEntity()).toDto()
-
+        logger.info("dto.password = ${dto.password}")
         return try {
             userRepository.save(dto.toEntity()).toDto()
         }catch (e: Exception){
@@ -43,9 +39,9 @@ class UserService(
     @Transactional
     fun updatePassword(principal: Principal, newPassword: String, currentPassword: String): UserDto? {
         val passwordInSession = userRepository.findByUsername(principal.name)?.getPassword()
-        logger.warn("newPassword = $newPassword")
-        logger.warn("currentPassword = $currentPassword")
-        logger.warn("passwordInSession = $passwordInSession ")
+        logger.info("newPassword = $newPassword")
+        logger.info("currentPassword = $currentPassword")
+        logger.info("passwordInSession = $passwordInSession ")
 
         return if (passwordEncoder.matches(currentPassword, passwordInSession)) {
             val userEntity: UserEntity = userRepository.findByUsername(principal.name)!!

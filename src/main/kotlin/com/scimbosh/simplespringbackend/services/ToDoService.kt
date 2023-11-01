@@ -38,7 +38,6 @@ class ToDoService(
 
     fun findToDoListByUser(username: String): List<ToDoDto>? = toDoRepository.findByUsername(username)?.map { it.toDto() }
 
-
     private fun ToDoEntity.toDto(): ToDoDto =
         ToDoDto(
             id = this.id,
