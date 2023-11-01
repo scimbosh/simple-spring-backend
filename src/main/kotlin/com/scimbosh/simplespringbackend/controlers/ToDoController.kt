@@ -1,7 +1,6 @@
 package com.scimbosh.simplespringbackend.controlers
 
 import com.scimbosh.simplespringbackend.dto.ToDoDto
-import com.scimbosh.simplespringbackend.entities.ToDoEntity
 import com.scimbosh.simplespringbackend.services.ToDoService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -20,20 +19,15 @@ class ToDoController(
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    @GetMapping("/hc")
+    fun userIndex(): String = "/todo/hc - OK"
+
     @GetMapping("/list")
-    fun list(principal: Principal): List<ToDoDto>? = toDoService.findToDoListByUser(principal.name)
+    fun list(): List<ToDoDto>? = toDoService.findToDoListByUserId()
 
     @PostMapping("/add")
     //@PostMapping("/add", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun addItem(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
-        dto.username = principal.name
-        val result = toDoService.saveToDo(dto)
-        return if (result != null) {
-            ResponseEntity<Any>(result, HttpStatus.CREATED)
-        } else {
-            ResponseEntity<Any>(dto, HttpStatus.BAD_REQUEST)
-        }
-    }
+    fun addItem(@RequestBody dto: ToDoDto): ToDoDto? = toDoService.saveToDo(dto)
 
     @DeleteMapping
     fun delete(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
@@ -49,7 +43,7 @@ class ToDoController(
     fun update(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
         logger.info("Update todo = $dto  ${dto.id.toString()}")
         return if (dto.username != principal.name) {
-            ResponseEntity<Any>(dto, HttpStatus.FORBIDDEN)
+            ResponseEntity<Any>(dto, HttpStatus.FORBIDDEN)    //toDo broken If the entry does not have a username then it is broken
         } else if (dto.id == null) {
             ResponseEntity<Any>(dto, HttpStatus.NOT_FOUND)
         } else {
@@ -57,11 +51,6 @@ class ToDoController(
             if (result == null) ResponseEntity<Any>(dto, HttpStatus.NOT_FOUND)
             else ResponseEntity<Any>(result, HttpStatus.OK)
         }
-    }
-
-    @GetMapping("/hc")
-    fun userIndex(): String {
-        return "/todo/hc - OK"
     }
 
 }

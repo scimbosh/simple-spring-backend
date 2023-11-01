@@ -1,9 +1,9 @@
 package com.scimbosh.simplespringbackend.dto
 
+import com.scimbosh.simplespringbackend.entities.UserEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import com.scimbosh.simplespringbackend.entities.UserEntity
 
 class SecurityUser(user: UserEntity) : UserDetails {
 

@@ -5,10 +5,8 @@ import com.scimbosh.simplespringbackend.repository.UserRepository
 import com.scimbosh.simplespringbackend.services.JpaUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
-import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.event.EventListener
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -31,49 +29,40 @@ class WebSecurityConfig() {
     }
 
     @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
+        //return NoOpPasswordEncoder.getInstance() //      if you don't need encryption password in DB
+    }
+
+    @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http
-            .cors { cors -> cors.disable() } // not working
-            .csrf { csrf -> csrf.disable() }
-            .authorizeRequests()
-            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // disable cors error to options request
+        http.cors { cors -> cors.disable() } // not working
+            .csrf { csrf -> csrf.disable() }.authorizeRequests().requestMatchers(HttpMethod.OPTIONS, "/**")
+            .permitAll()  // disable cors error to options request
             .requestMatchers("/user/login", "/user/create", "/user/roles", "/user/hc").permitAll()
             .requestMatchers(HttpMethod.GET, "/user/list").hasAuthority("ROLE_ADMIN")
-            .requestMatchers( HttpMethod.PATCH, "/user").hasAuthority("ROLE_ADMIN")
-            .requestMatchers( HttpMethod.DELETE, "/user").hasAuthority("ROLE_ADMIN")
-            .anyRequest().authenticated()
-            .and()
-            .formLogin().loginPage("/user/login")
-            .and().httpBasic()
+            .requestMatchers(HttpMethod.PATCH, "/user").hasAuthority("ROLE_ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/user").hasAuthority("ROLE_ADMIN").anyRequest().authenticated().and()
+            .formLogin().loginPage("/user/login").and().httpBasic()
         return http.build()
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
-
-//if you don't need encryption password in DB
-//    @Bean
-//    fun passwordEncoder(): PasswordEncoder {
-//        return NoOpPasswordEncoder.getInstance()
-//    }
-
-
-    //example of running custom code after application launch
-    @EventListener
-    fun doSomethingAfterStartup(event: ApplicationReadyEvent) {
-        println("hello world, I have just started up")
-    }
-
-    //uncomment if you need to save users in the DB
-    @Bean
-    fun commandLineRunner(users: UserRepository, encoder: PasswordEncoder): CommandLineRunner {
+    fun commandLineRunner(userRepository: UserRepository, encoder: PasswordEncoder): CommandLineRunner {
         return CommandLineRunner { _: Array<String?>? ->
-            println("EXECUTE START")
-//            users.save(UserEntity("user", encoder.encode("password"), listOf<String>("ROLE_USER")))
-//            users.save(UserEntity("admin", encoder.encode("password"), listOf<String>("ROLE_USER", "ROLE_ADMIN")))
-            println("EXECUTE END")
+            println("Execute task")
+            if (userRepository.findByUsername("admin") == null) {
+                println("Create ADMIN")
+                userRepository.save(
+                    UserEntity(
+                        "admin", encoder.encode("password"), listOf<String>("ROLE_USER", "ROLE_ADMIN")
+                    )
+                )
+            }
+            if (userRepository.findByUsername("user") == null) {
+                println("Create USER")
+                userRepository.save(UserEntity("user", encoder.encode("password"), listOf<String>("ROLE_USER")))
+            }
         }
     }
 

@@ -13,20 +13,20 @@ import java.security.Principal
 @RestController
 @RequestMapping(value = ["/user"])
 @CrossOrigin(origins = ["http://localhost:4200"], maxAge = 86400)
-open class UserController(
+class UserController(
     private val userService: UserService
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @GetMapping("/hc")
-    fun userIndex(): String = "/auth/hc - OK"
+    fun userIndex(): String = "/user/hc - OK"
 
     @GetMapping("/login")
     fun login(user: Principal): Principal = user
 
     @GetMapping("/roles")
-    fun getRoles(): List<String> = listOf("ROLE_USER","ROLE_ADMIN")
+    fun getRoles(): List<String> = listOf("ROLE_USER", "ROLE_ADMIN")
 
     @GetMapping("/list")
     fun getUsers(): List<UserDto>? = userService.getUsers()
@@ -36,11 +36,11 @@ open class UserController(
         ResponseEntity<Any>(userService.createUser(user), HttpStatus.CREATED)
 
     @PatchMapping()
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    //@PostAuthorize("hasRole('ROLE_ADMIN')")
-    open fun updateUser(@RequestBody user: UserDto): UserDto = userService.updateUser(user)
+    fun updateUser(@RequestBody user: UserDto): UserDto = userService.updateUser(user)
 
     @PatchMapping("/password")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PostAuthorize("hasRole('ROLE_ADMIN')")
     fun updatePassword(
         principal: Principal,
         @RequestBody jsonNode: JsonNode
@@ -51,9 +51,7 @@ open class UserController(
     }
 
     @DeleteMapping()
-    fun deleteUser(@RequestBody user: UserDto){
-        userService.deleteUser(user)
-    }
+    fun deleteUser(@RequestBody user: UserDto) = userService.deleteUser(user)
 
 
 }

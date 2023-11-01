@@ -4,13 +4,13 @@ import org.springframework.http.HttpStatus
 
 class NotFoundException(
     errorCode: String? = "not.found",
-    root: String? = null,
+    cause: String? = null,
     message: String? = "item not found"
 ) : BaseException(
     HttpStatus.NOT_FOUND,
     ApiError(
         errorCode = errorCode,
-        root = root,
+        cause = cause,
         message = message
     )
 )

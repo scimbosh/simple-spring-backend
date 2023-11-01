@@ -8,16 +8,19 @@ class ToDoEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name="id", nullable=false, updatable=false)
-    @Column(name="id")
+    @Column(name = "id")
     val id: Long? = 0,
 
-    @Column(name="username", nullable=false)
+    @Column(name = "userid", nullable = false)
+    var userId: Long? = 0,
+
+    @Column(name = "username")
     val username: String? = "",
 
-    @Column(name="content")
+    @Column(name = "content")
     var content: String? = "",
 
-    @Column(name="checked")
+    @Column(name = "checked")
     var checked: Boolean? = false
 
 )

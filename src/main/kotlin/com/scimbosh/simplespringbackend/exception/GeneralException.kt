@@ -2,12 +2,13 @@ package com.scimbosh.simplespringbackend.exception
 
 import org.springframework.http.HttpStatus
 
-class MatchException(
-    errorCode: String? = "values.not.equal",
+class GeneralException(
+    errorCode: String? = "internal.error",
     cause: String? = null,
-    message: String? = "value not equal"
+    message: String? = null,
+    httpStatus: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR
 ) : BaseException(
-    HttpStatus.NOT_FOUND,
+    httpStatus = httpStatus,
     ApiError(
         errorCode = errorCode,
         cause = cause,

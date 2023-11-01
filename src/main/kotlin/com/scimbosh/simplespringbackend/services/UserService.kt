@@ -19,10 +19,10 @@ class UserService(
     private val userRepository: UserRepository,
 ) {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     @Autowired
     lateinit var passwordEncoder: PasswordEncoder
+
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
     fun createUser(dto: UserDto): UserDto? {
@@ -30,8 +30,8 @@ class UserService(
         logger.info("dto.password = ${dto.password}")
         return try {
             userRepository.save(dto.toEntity()).toDto()
-        }catch (e: Exception){
-            throw UniquenessViolationException(root = dto.toString(), message = e.message)
+        } catch (e: Exception) {
+            throw UniquenessViolationException(cause = dto.toString(), message = e.message)
         }
 
     }
@@ -48,33 +48,34 @@ class UserService(
             userEntity.setPassword(passwordEncoder.encode(newPassword))
             userRepository.save(userEntity).toDto()
         } else {
-            throw MatchException(root = currentPassword)
+            throw MatchException(cause = currentPassword)
         }
     }
 
     @Transactional
-    fun updateUser(user: UserDto): UserDto{
+    fun updateUser(user: UserDto): UserDto {
         val currentUserEntity: UserEntity? = userRepository.findById(user.id!!).getOrNull()
-        if (currentUserEntity != null){
-            if(!user.username.isNullOrEmpty())currentUserEntity.setUsername(user.username)
-            if(!user.roles.isNullOrEmpty())currentUserEntity.setRoles(user.roles)
-            if(!user.password.isNullOrEmpty()) currentUserEntity.setPassword(passwordEncoder.encode(user.password))
-            return  userRepository.save(currentUserEntity).toDto()
+        if (currentUserEntity != null) {
+            if (!user.username.isNullOrEmpty()) currentUserEntity.setUsername(user.username)
+            if (!user.roles.isNullOrEmpty()) currentUserEntity.setRoles(user.roles)
+            if (!user.password.isNullOrEmpty()) currentUserEntity.setPassword(passwordEncoder.encode(user.password))
+            return userRepository.save(currentUserEntity).toDto()
         } else {
-            throw NotFoundException(root = user.id.toString(), message = "user not found")
+            throw NotFoundException(cause = user.id.toString(), message = "user not found")
         }
     }
+
     @Transactional
-    fun deleteUser(user: UserDto){
-        if ( user.id != null ) userRepository.deleteById(user.id!!)
-        else throw NotFoundException(root = user.toString(), message = "user.id not found")
+    fun deleteUser(user: UserDto) {
+        if (user.id != null) userRepository.deleteById(user.id!!)
+        else throw NotFoundException(cause = user.toString(), message = "user.id not found")
     }
 
     fun getUsers(): List<UserDto>? =
-         userRepository.findAll().map {
+        userRepository.findAll().map {
             it.setPassword("")
             it.toDto()
-         }
+        }
 
 
     private fun UserDto.toEntity(): UserEntity =
