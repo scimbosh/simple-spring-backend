@@ -2,6 +2,7 @@ package com.scimbosh.simplespringbackend.services
 
 import com.scimbosh.simplespringbackend.dto.UserDto
 import com.scimbosh.simplespringbackend.entities.UserEntity
+import com.scimbosh.simplespringbackend.exception.MatchException
 import com.scimbosh.simplespringbackend.exception.NotFoundException
 import com.scimbosh.simplespringbackend.exception.UniquenessViolationException
 import com.scimbosh.simplespringbackend.repository.UserRepository
@@ -51,7 +52,7 @@ class UserService(
             userEntity.setPassword(passwordEncoder.encode(newPassword))
             userRepository.save(userEntity).toDto()
         } else {
-            null
+            throw MatchException(root = currentPassword)
         }
     }
 
