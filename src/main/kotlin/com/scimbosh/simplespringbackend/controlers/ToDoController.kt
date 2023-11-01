@@ -1,6 +1,7 @@
 package com.scimbosh.simplespringbackend.controlers
 
 import com.scimbosh.simplespringbackend.dto.ToDoDto
+import com.scimbosh.simplespringbackend.entities.ToDoEntity
 import com.scimbosh.simplespringbackend.services.ToDoService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -19,6 +20,9 @@ class ToDoController(
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    @GetMapping("/list")
+    fun list(principal: Principal): List<ToDoDto>? = toDoService.findToDoListByUser(principal.name)
+
     @PostMapping("/add")
     //@PostMapping("/add", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun addItem(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
@@ -31,9 +35,7 @@ class ToDoController(
         }
     }
 
-    @GetMapping("/list")
-    fun list(principal: Principal): ResponseEntity<Any> =
-        ResponseEntity<Any>(toDoService.findToDoListByUser(principal.name), HttpStatus.OK)
+
 
 
     @DeleteMapping

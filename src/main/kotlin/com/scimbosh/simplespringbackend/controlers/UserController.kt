@@ -35,21 +35,20 @@ open class UserController(
     fun createUser(@RequestBody user: UserDto): ResponseEntity<Any> =
         ResponseEntity<Any>(userService.createUser(user), HttpStatus.CREATED)
 
-    @PatchMapping("/password")
-    fun updatePassword(
-        principal: Principal,
-        @RequestBody jsonNode: JsonNode
-    ): ResponseEntity<Any> {
-        val newPassword = jsonNode.get("newPassword").asText()
-        val currentPassword = jsonNode.get("currentPassword").asText()
-        return if (userService.updatePassword(principal, newPassword, currentPassword) != null ) ResponseEntity<Any>(HttpStatus.OK)
-        else  ResponseEntity<Any>(HttpStatus.FORBIDDEN)
-    }
-
     @PatchMapping()
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     //@PostAuthorize("hasRole('ROLE_ADMIN')")
     open fun updateUser(@RequestBody user: UserDto): UserDto = userService.updateUser(user)
+
+    @PatchMapping("/password")
+    fun updatePassword(
+        principal: Principal,
+        @RequestBody jsonNode: JsonNode
+    ): UserDto? {
+        val newPassword = jsonNode.get("newPassword").asText()
+        val currentPassword = jsonNode.get("currentPassword").asText()
+        return userService.updatePassword(principal, newPassword, currentPassword)
+    }
 
     @DeleteMapping()
     fun deleteUser(@RequestBody user: UserDto){
