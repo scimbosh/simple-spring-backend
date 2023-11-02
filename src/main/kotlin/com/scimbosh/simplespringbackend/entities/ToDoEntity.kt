@@ -15,7 +15,7 @@ class ToDoEntity(
     var userId: Long? = 0,
 
     @Column(name = "username")
-    val username: String? = "",
+    var username: String? = "",
 
     @Column(name = "content")
     var content: String? = "",

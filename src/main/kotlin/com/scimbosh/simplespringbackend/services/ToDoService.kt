@@ -3,7 +3,6 @@ package com.scimbosh.simplespringbackend.services
 import com.scimbosh.simplespringbackend.dto.ToDoDto
 import com.scimbosh.simplespringbackend.entities.ToDoEntity
 import com.scimbosh.simplespringbackend.exception.GeneralException
-import com.scimbosh.simplespringbackend.exception.MatchException
 import com.scimbosh.simplespringbackend.exception.NotFoundException
 import com.scimbosh.simplespringbackend.repository.ToDoRepository
 import com.scimbosh.simplespringbackend.repository.UserRepository
@@ -23,29 +22,34 @@ class ToDoService(
     fun findToDoListByUserId(): List<ToDoDto>? = toDoRepository.findToDoListByUserId(getUserId())?.map { it.toDto() }
 
     @Deprecated("Use use findToDoListByUserId() rather this")
-    fun findToDoListByUserName(username: String): List<ToDoDto>? = toDoRepository.findByUsername(username)?.map { it.toDto() }
+    fun findToDoListByUserName(username: String): List<ToDoDto>? =
+        toDoRepository.findByUsername(username)?.map { it.toDto() }
 
     @Transactional
     fun saveToDo(dto: ToDoDto): ToDoDto? {
-        val todo = dto.toEntity()
+        var todo = dto.toEntity()
         todo.userId = getUserId()
+        todo.username = SecurityContextHolder.getContext().authentication.name
         return try {
             toDoRepository.save(todo).toDto()
-        }catch (e: Exception){
-            throw GeneralException(cause= dto.toString(), message = e.message)
+        } catch (e: Exception) {
+            throw GeneralException(cause = dto.toString(), message = e.message)
         }
     }
 
     @Transactional
-    fun deleteSelected(dto: ToDoDto) = toDoRepository.deleteById(dto.id!!.toInt())
+    fun deleteSelected(dto: ToDoDto) {
+        checkingOwnerOfTodo(dto)
+        toDoRepository.deleteById(dto.id!!.toInt())
+    }
 
     @Transactional
     fun updateSelected(dto: ToDoDto): ToDoDto? {
-        if (dto.userId != getUserId()) throw MatchException(cause = "userId")
-        val todoEntity: ToDoEntity? =  toDoRepository.findById(dto.id!!)
+        checkingOwnerOfTodo(dto)
+        val todoEntity: ToDoEntity? = toDoRepository.findById(dto.id!!)
         todoEntity?.checked = dto.checked
         todoEntity?.content = dto.content
-        return if(todoEntity != null){
+        return if (todoEntity != null) {
             toDoRepository.save(todoEntity).toDto()
         } else {
             throw NotFoundException(cause = "id")
@@ -54,6 +58,12 @@ class ToDoService(
 
     private fun getUserId(): Long? =
         userRepository.findByUsername(SecurityContextHolder.getContext().authentication.name)?.getId()
+
+    private fun checkingOwnerOfTodo(todo: ToDoDto) {
+        val userTodoIds = toDoRepository.findToDoListByUserId(getUserId())?.map { it.id }
+        if (userTodoIds.isNullOrEmpty()) throw NotFoundException(message = "todo id not found by this user")
+        if (!userTodoIds.contains(todo.id)) throw NotFoundException(message = "todo id not found by this user")
+    }
 
     private fun ToDoEntity.toDto(): ToDoDto =
         ToDoDto(
@@ -72,7 +82,6 @@ class ToDoService(
             content = this.content,
             checked = this.checked
         )
-
 
 
 }

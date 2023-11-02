@@ -30,17 +30,10 @@ class ToDoController(
     fun addItem(@RequestBody dto: ToDoDto): ToDoDto? = toDoService.saveToDo(dto)
 
     @DeleteMapping
-    fun delete(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
-        logger.info("Name dto = ${dto.username}  namePrincipal = ${principal.name}")
-        if (dto.username == null) dto.username = principal.name
-        if (dto.username != principal.name) {
-            return ResponseEntity<Any>(dto, HttpStatus.FORBIDDEN)
-        }
-        return ResponseEntity<Any>(toDoService.deleteSelected(dto), HttpStatus.OK)
-    }
+    fun delete(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> =
+        ResponseEntity<Any>(toDoService.deleteSelected(dto), HttpStatus.OK)
 
     @PatchMapping
     fun update(@RequestBody dto: ToDoDto, principal: Principal): ToDoDto? = toDoService.updateSelected(dto)
-
 
 }
