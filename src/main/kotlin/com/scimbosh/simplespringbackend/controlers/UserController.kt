@@ -41,6 +41,8 @@ class UserController(
     @PatchMapping("/password")
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     //@PostAuthorize("hasRole('ROLE_ADMIN')")
+    //@Secured("ROLE_ADMIN")
+    //@RolesAllowed("ROLE_ADMIN")
     fun updatePassword(
         principal: Principal,
         @RequestBody jsonNode: JsonNode

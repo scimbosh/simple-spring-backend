@@ -3,6 +3,8 @@ package com.scimbosh.simplespringbackend.services
 import com.scimbosh.simplespringbackend.dto.ToDoDto
 import com.scimbosh.simplespringbackend.entities.ToDoEntity
 import com.scimbosh.simplespringbackend.exception.GeneralException
+import com.scimbosh.simplespringbackend.exception.MatchException
+import com.scimbosh.simplespringbackend.exception.NotFoundException
 import com.scimbosh.simplespringbackend.repository.ToDoRepository
 import com.scimbosh.simplespringbackend.repository.UserRepository
 import org.slf4j.LoggerFactory
@@ -39,20 +41,19 @@ class ToDoService(
 
     @Transactional
     fun updateSelected(dto: ToDoDto): ToDoDto? {
+        if (dto.userId != getUserId()) throw MatchException(cause = "userId")
         val todoEntity: ToDoEntity? =  toDoRepository.findById(dto.id!!)
         todoEntity?.checked = dto.checked
         todoEntity?.content = dto.content
         return if(todoEntity != null){
             toDoRepository.save(todoEntity).toDto()
         } else {
-            null
+            throw NotFoundException(cause = "id")
         }
     }
 
-
-
-
-
+    private fun getUserId(): Long? =
+        userRepository.findByUsername(SecurityContextHolder.getContext().authentication.name)?.getId()
 
     private fun ToDoEntity.toDto(): ToDoDto =
         ToDoDto(
@@ -72,8 +73,6 @@ class ToDoService(
             checked = this.checked
         )
 
-    private fun getUserId(): Long? =
-        userRepository.findByUsername(SecurityContextHolder.getContext().authentication.name)?.getId()
 
 
 }

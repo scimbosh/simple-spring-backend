@@ -40,17 +40,7 @@ class ToDoController(
     }
 
     @PatchMapping
-    fun update(@RequestBody dto: ToDoDto, principal: Principal): ResponseEntity<Any> {
-        logger.info("Update todo = $dto  ${dto.id.toString()}")
-        return if (dto.username != principal.name) {
-            ResponseEntity<Any>(dto, HttpStatus.FORBIDDEN)    //toDo broken If the entry does not have a username then it is broken
-        } else if (dto.id == null) {
-            ResponseEntity<Any>(dto, HttpStatus.NOT_FOUND)
-        } else {
-            val result = toDoService.updateSelected(dto)
-            if (result == null) ResponseEntity<Any>(dto, HttpStatus.NOT_FOUND)
-            else ResponseEntity<Any>(result, HttpStatus.OK)
-        }
-    }
+    fun update(@RequestBody dto: ToDoDto, principal: Principal): ToDoDto? = toDoService.updateSelected(dto)
+
 
 }
