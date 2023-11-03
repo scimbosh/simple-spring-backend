@@ -1,8 +1,8 @@
-#Simple-Spring-Backend
+# Simple-Spring-Backend
 This is a simple rest server.
 Using: `Spring Boot`, `Spring Security`, `Spring Data JPA`.
 
-#Versions:
+# Versions:
 - JDK 17.0.8
 - Kotlin 1.8 (1.8.22)
 - Gradle 8.2.1
