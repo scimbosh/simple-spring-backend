@@ -34,6 +34,8 @@ dependencies {
 //	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 //	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
+//test
+
 }
 
 tasks.withType<KotlinCompile> {
