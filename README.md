@@ -1,6 +1,10 @@
 # Simple-Spring-Backend
-This is a simple rest server.
+This is a simple rest server for 
 Using: `Spring Boot`, `Spring Security`, `Spring Data JPA`.
+
+
+Frontend application here [simple-angular-frontend](https://github.com/scimbosh/simple-angular-frontend).
+
 
 # Versions:
 - JDK 17.0.8
