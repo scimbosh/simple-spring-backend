@@ -37,13 +37,18 @@ class WebSecurityConfig() {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.cors { cors -> cors.disable() } // not working
-            .csrf { csrf -> csrf.disable() }.authorizeRequests().requestMatchers(HttpMethod.OPTIONS, "/**")
-            .permitAll()  // disable cors error to options request
+            .csrf { csrf -> csrf.disable() }
+            .authorizeRequests()
+            .requestMatchers( "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            .requestMatchers( "/actuator/**").permitAll()
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // disable cors error to options request
             .requestMatchers("/user/login", "/user/create", "/user/roles", "/user/hc").permitAll()
             .requestMatchers(HttpMethod.GET, "/user/list").hasAuthority("ROLE_ADMIN")
             .requestMatchers(HttpMethod.PATCH, "/user").hasAuthority("ROLE_ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/user").hasAuthority("ROLE_ADMIN").anyRequest().authenticated().and()
-            .formLogin().loginPage("/user/login").and().httpBasic()
+            .requestMatchers(HttpMethod.DELETE, "/user").hasAuthority("ROLE_ADMIN")
+            .anyRequest().authenticated()
+            .and().formLogin().loginPage("/user/login")
+            .and().httpBasic()
         return http.build()
     }
 
