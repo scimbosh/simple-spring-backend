@@ -40,6 +40,7 @@ class WebSecurityConfig() {
             .csrf { csrf -> csrf.disable() }
             .authorizeRequests()
             .requestMatchers( "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            .requestMatchers( "/actuator/**").permitAll()
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // disable cors error to options request
             .requestMatchers("/user/login", "/user/create", "/user/roles", "/user/hc").permitAll()
             .requestMatchers(HttpMethod.GET, "/user/list").hasAuthority("ROLE_ADMIN")

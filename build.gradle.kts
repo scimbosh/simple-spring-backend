@@ -6,6 +6,8 @@ plugins {
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
 	kotlin("plugin.jpa") version "1.8.22"
+
+	//id ("org.springdoc.openapi-gradle-plugin") version "1.7.0"
 }
 
 group = "com.scimbosh"
@@ -32,10 +34,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	testImplementation("org.springframework.security:spring-security-test")
 
-	//thymeleaf
-//	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-//	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-
 	//springdoc
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 	testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.2.0")
@@ -44,6 +42,12 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-common:2.2.0")
 	//springdoc-security
 	implementation("org.springdoc:springdoc-openapi-security:1.7.0")
+
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+	//thymeleaf
+//	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+//	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
 }
 
