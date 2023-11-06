@@ -27,14 +27,23 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	runtimeOnly("org.postgresql:postgresql")
+
 	//security
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	testImplementation("org.springframework.security:spring-security-test")
+
 	//thymeleaf
 //	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 //	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
-//test
+	//springdoc
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+	testImplementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.2.0")
+
+	//extend
+	implementation("org.springdoc:springdoc-openapi-starter-common:2.2.0")
+	//springdoc-security
+	implementation("org.springdoc:springdoc-openapi-security:1.7.0")
 
 }
 
