@@ -1,4 +1,4 @@
-# Simple-Spring-Backend
+## Simple-Spring-Backend
 This is a simple rest server for 
 Using: `Spring Boot`, `Spring Security`, `Spring Data JPA`.
 
