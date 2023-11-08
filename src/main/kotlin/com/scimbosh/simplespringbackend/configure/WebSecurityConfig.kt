@@ -4,6 +4,7 @@ import com.scimbosh.simplespringbackend.entities.UserEntity
 import com.scimbosh.simplespringbackend.repository.UserRepository
 import com.scimbosh.simplespringbackend.services.JpaUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,7 +19,10 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity
-class WebSecurityConfig() {
+class WebSecurityConfig(
+    @Value("\${app_config.hello_message}")
+    private val helloMessage: String
+) {
 
     @Autowired
     lateinit var userDetailsService: JpaUserDetailsService
@@ -55,18 +59,19 @@ class WebSecurityConfig() {
     @Bean
     fun commandLineRunner(userRepository: UserRepository, encoder: PasswordEncoder): CommandLineRunner {
         return CommandLineRunner { _: Array<String?>? ->
+            println(helloMessage)
             println("Execute task")
             if (userRepository.findByUsername("admin") == null) {
                 println("Create ADMIN")
                 userRepository.save(
                     UserEntity(
-                        "admin", encoder.encode("password"), listOf<String>("ROLE_USER", "ROLE_ADMIN")
+                        "admin", encoder.encode("password"), listOf("ROLE_USER", "ROLE_ADMIN")
                     )
                 )
             }
             if (userRepository.findByUsername("user") == null) {
                 println("Create USER")
-                userRepository.save(UserEntity("user", encoder.encode("password"), listOf<String>("ROLE_USER")))
+                userRepository.save(UserEntity("user", encoder.encode("password"), listOf("ROLE_USER")))
             }
         }
     }

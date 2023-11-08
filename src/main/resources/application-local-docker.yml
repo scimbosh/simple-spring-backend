@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.219.101:5432/restserverfortest
+app_config:
+  hello_message: "This is local-docker environment"
