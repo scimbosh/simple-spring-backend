@@ -1,6 +1,6 @@
 ## Simple-Spring-Backend
-This is a simple rest server for 
-Using: `Spring Boot`, `Spring Security`, `Spring Data JPA`.
+This is a simple rest server that uses the following technologies: 
+`Spring Boot`, `Spring Security`, `Spring Data JPA`, `Docker`, `Springdoc`.
 
 Frontend for the application is here [simple-angular-frontend](https://github.com/scimbosh/simple-angular-frontend).
 
@@ -40,7 +40,7 @@ ALTER TABLE IF EXISTS public.users
     OWNER to postgres;
 ```
 
-Table of todo:
+Table of todos:
 ```sql
 CREATE TABLE IF NOT EXISTS public.todos
 (
