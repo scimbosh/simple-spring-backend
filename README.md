@@ -2,14 +2,23 @@
 This is a simple rest server for 
 Using: `Spring Boot`, `Spring Security`, `Spring Data JPA`.
 
-
-Frontend application here [simple-angular-frontend](https://github.com/scimbosh/simple-angular-frontend).
+Frontend for the application is here [simple-angular-frontend](https://github.com/scimbosh/simple-angular-frontend).
 
 [Springdoc](http://localhost:8080/swagger-ui/index.html)
 
 [Actuator](http://localhost:8080/actuator)
 
-# Versions:
+### Docker
+[Docker repository](https://hub.docker.com/repository/docker/scimbosh/simple_spring_backend/general)
+
+Run the application in docker: 
+
+```bash
+docker pull scimbosh/simple_spring_backend:simple_spring_backend-1.0.0
+docker run -p 8080:8080 --name simple-spring-backend --pull missing scimbosh/simple_spring_backend:simple_spring_backend-1.0.0
+```
+
+### Versions:
 - JDK 17.0.8
 - Kotlin 1.8 (1.8.22)
 - Gradle 8.2.1
