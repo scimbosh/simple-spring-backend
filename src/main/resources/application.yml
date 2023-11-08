@@ -32,5 +32,5 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
-app_config:
-  hello_message: "This is default environment"
+app-config:
+  hello-message: "This is default environment"

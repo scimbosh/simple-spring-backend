@@ -20,8 +20,8 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(
-    @Value("\${app_config.hello_message}")
-    private val helloMessage: String
+//    @Value("\${app-config.hello-message}")  private val helloMessage: String,
+    private val properties: PropertiesConfig
 ) {
 
     @Autowired
@@ -41,26 +41,23 @@ class WebSecurityConfig(
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.cors { cors -> cors.disable() } // not working
-            .csrf { csrf -> csrf.disable() }
-            .authorizeRequests()
-            .requestMatchers( "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-            .requestMatchers( "/actuator/**").permitAll()
-            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // disable cors error to options request
+            .csrf { csrf -> csrf.disable() }.authorizeRequests()
+            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            .requestMatchers("/actuator/**").permitAll().requestMatchers(HttpMethod.OPTIONS, "/**")
+            .permitAll()  // disable cors error to options request
             .requestMatchers("/user/login", "/user/create", "/user/roles", "/user/hc").permitAll()
             .requestMatchers(HttpMethod.GET, "/user/list").hasAuthority("ROLE_ADMIN")
             .requestMatchers(HttpMethod.PATCH, "/user").hasAuthority("ROLE_ADMIN")
-            .requestMatchers(HttpMethod.DELETE, "/user").hasAuthority("ROLE_ADMIN")
-            .anyRequest().authenticated()
-            .and().formLogin().loginPage("/user/login")
-            .and().httpBasic()
+            .requestMatchers(HttpMethod.DELETE, "/user").hasAuthority("ROLE_ADMIN").anyRequest().authenticated().and()
+            .formLogin().loginPage("/user/login").and().httpBasic()
         return http.build()
     }
 
     @Bean
     fun commandLineRunner(userRepository: UserRepository, encoder: PasswordEncoder): CommandLineRunner {
         return CommandLineRunner { _: Array<String?>? ->
-            println(helloMessage)
             println("Execute task")
+            println(properties.helloMessage)
             if (userRepository.findByUsername("admin") == null) {
                 println("Create ADMIN")
                 userRepository.save(
@@ -75,6 +72,5 @@ class WebSecurityConfig(
             }
         }
     }
-
 
 }

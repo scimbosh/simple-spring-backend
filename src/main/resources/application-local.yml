@@ -1,2 +1,2 @@
-app_config:
-  hello_message: "This is local environment"
+app-config:
+  hello-message: "This is local environment"
