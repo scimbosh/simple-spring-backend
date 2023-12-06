@@ -1,2 +1,3 @@
 app-config:
   hello-message: "This is local environment"
+  frontend-url: "http://localhost:4200"

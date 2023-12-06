@@ -14,8 +14,10 @@ import java.security.Principal
 @RestController
 @RequestMapping(value = ["/todo"])
 @SecurityRequirement(name = "basicAuth")
-@CrossOrigin(origins = ["http://localhost:4200"], maxAge = 86400)
 //@CrossOrigin(origins = ["*"], maxAge = 86400)
+//@CrossOrigin(origins = ["http://192.168.219.100:4200"], maxAge = 86400)
+//@CrossOrigin(origins = ["http://localhost:4200"], maxAge = 86400)
+@CrossOrigin(origins = ["\${app-config.frontend-url}"], maxAge = 86400)
 class ToDoController(
     private val toDoService: ToDoService
 ) {

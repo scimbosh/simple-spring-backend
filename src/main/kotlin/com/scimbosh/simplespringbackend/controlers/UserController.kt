@@ -1,10 +1,12 @@
 package com.scimbosh.simplespringbackend.controlers
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.scimbosh.simplespringbackend.configure.PropertiesConfig
 import com.scimbosh.simplespringbackend.dto.UserDto
 import com.scimbosh.simplespringbackend.services.UserService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,7 +16,9 @@ import java.security.Principal
 @RestController
 @RequestMapping(value = ["/user"])
 @SecurityRequirement(name = "basicAuth")
-@CrossOrigin(origins = ["http://localhost:4200"], maxAge = 86400)
+//@CrossOrigin(origins = ["*"], maxAge = 86400)
+//@CrossOrigin(origins = ["http://192.168.219.100:4200"], maxAge = 86400)
+@CrossOrigin(origins = ["\${app-config.frontend-url}"], maxAge = 86400)
 class UserController(
     private val userService: UserService
 ) {

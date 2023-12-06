@@ -34,3 +34,4 @@ springdoc:
     path: /swagger-ui.html
 app-config:
   hello-message: "This is default environment"
+  frontend-url: "http://localhost:4200"
