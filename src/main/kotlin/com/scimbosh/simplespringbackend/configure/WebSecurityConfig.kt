@@ -4,7 +4,6 @@ import com.scimbosh.simplespringbackend.entities.UserEntity
 import com.scimbosh.simplespringbackend.repository.UserRepository
 import com.scimbosh.simplespringbackend.services.JpaUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

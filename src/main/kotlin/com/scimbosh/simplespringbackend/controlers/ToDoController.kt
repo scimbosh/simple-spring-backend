@@ -2,7 +2,6 @@ package com.scimbosh.simplespringbackend.controlers
 
 import com.scimbosh.simplespringbackend.dto.ToDoDto
 import com.scimbosh.simplespringbackend.services.ToDoService
-import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -15,8 +14,6 @@ import java.security.Principal
 @RequestMapping(value = ["/todo"])
 @SecurityRequirement(name = "basicAuth")
 //@CrossOrigin(origins = ["*"], maxAge = 86400)
-//@CrossOrigin(origins = ["http://192.168.219.100:4200"], maxAge = 86400)
-//@CrossOrigin(origins = ["http://localhost:4200"], maxAge = 86400)
 @CrossOrigin(origins = ["\${app-config.frontend-url}"], maxAge = 86400)
 class ToDoController(
     private val toDoService: ToDoService
